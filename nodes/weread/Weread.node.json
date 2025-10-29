@@ -1,0 +1,19 @@
+{
+	"node": "n8n-nodes-weread",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Productivity", "Data & Storage"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://github.com/funcodingdev/n8n-nodes-weread#credentials"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/funcodingdev/n8n-nodes-weread"
+			}
+		]
+	}
+}
+
