@@ -25,7 +25,7 @@ export const chaptersDescription: INodeProperties[] = [
 						method: 'POST',
 						url: '/web/book/chapterInfos',
 						body: {
-							bookIds: '={{[$parameter.bookId]}}',
+							bookIds: '={{[$parameter.bookId.value || $parameter.bookId]}}',
 						},
 					},
 				},

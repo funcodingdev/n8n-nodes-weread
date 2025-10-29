@@ -23,7 +23,7 @@ export const bookmarksDescription: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/web/book/bookmarklist?bookId={{$parameter.bookId}}',
+						url: '=/web/book/bookmarklist?bookId={{$parameter.bookId.value || $parameter.bookId}}',
 					},
 				},
 			},

@@ -6,6 +6,7 @@ import { bookmarksDescription } from './resources/bookmarks';
 import { progressDescription } from './resources/progress';
 import { reviewsDescription } from './resources/reviews';
 import { chaptersDescription } from './resources/chapters';
+import { getBooks } from './listSearch/getBooks';
 
 export class Weread implements INodeType {
 	description: INodeTypeDescription = {
@@ -82,5 +83,10 @@ export class Weread implements INodeType {
 			...chaptersDescription,
 		],
 	};
-}
 
+	methods = {
+		listSearch: {
+			getBooks,
+		},
+	};
+}

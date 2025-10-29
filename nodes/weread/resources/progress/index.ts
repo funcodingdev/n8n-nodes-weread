@@ -23,7 +23,7 @@ export const progressDescription: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/web/book/getProgress?bookId={{$parameter.bookId}}',
+						url: '=/web/book/getProgress?bookId={{$parameter.bookId.value || $parameter.bookId}}',
 					},
 				},
 			},

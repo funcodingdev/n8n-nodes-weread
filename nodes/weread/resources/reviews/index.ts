@@ -23,7 +23,7 @@ export const reviewsDescription: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/web/review/list/best?bookId={{$parameter.bookId}}&count={{$parameter.limit || 10}}&maxIdx=0&synckey=0',
+						url: '=/web/review/list/best?bookId={{$parameter.bookId.value || $parameter.bookId}}&count={{$parameter.limit || 10}}&maxIdx=0&synckey=0',
 					},
 				},
 			},

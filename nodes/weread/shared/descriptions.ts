@@ -1,13 +1,39 @@
 import type { INodeProperties } from 'n8n-workflow';
 
 export const bookIdField: INodeProperties = {
-	displayName: '书籍 ID',
+	displayName: '书籍',
 	name: 'bookId',
-	type: 'string',
-	default: '',
+	type: 'resourceLocator',
+	default: { mode: 'list', value: '' },
 	required: true,
-	description: '书籍的唯一标识符',
-	placeholder: '例如：CB_xxxxxxxxxxxxx',
+	description: '选择或输入书籍 ID',
+	modes: [
+		{
+			displayName: '从列表选择',
+			name: 'list',
+			type: 'list',
+			placeholder: '选择书籍...',
+			typeOptions: {
+				searchListMethod: 'getBooks',
+				searchable: true,
+			},
+		},
+		{
+			displayName: '按 ID',
+			name: 'id',
+			type: 'string',
+			placeholder: '例如：CB_xxxxxxxxxxxxx',
+			validation: [
+				{
+					type: 'regex',
+					properties: {
+						regex: '.+',
+						errorMessage: '请输入有效的书籍 ID',
+					},
+				},
+			],
+		},
+	],
 };
 
 export const limitField: INodeProperties = {

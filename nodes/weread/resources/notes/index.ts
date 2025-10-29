@@ -23,7 +23,7 @@ export const notesDescription: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/web/review/list?bookId={{$parameter.bookId}}&listType={{$parameter.listType || 4}}&listMode=2&syncKey=0&count=0&maxIdx=0',
+						url: '=/web/review/list?bookId={{$parameter.bookId.value || $parameter.bookId}}&listType={{$parameter.listType || 4}}&listMode=2&syncKey=0&count=0&maxIdx=0',
 					},
 				},
 			},
