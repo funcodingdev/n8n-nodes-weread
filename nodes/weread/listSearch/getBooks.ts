@@ -12,8 +12,12 @@ export async function getBooks(
 		const responseData = (await wereadApiRequest.call(this, 'GET', '/api/user/notebook')) as {
 			books?: Array<{
 				bookId: string;
-				title: string;
-				author: string;
+				title?: string;
+				author?: string;
+				book?: {
+					title?: string;
+					author?: string;
+				};
 			}>;
 		};
 
@@ -21,11 +25,22 @@ export async function getBooks(
 			return returnData;
 		}
 
-		// 将书籍转换为搜索结果格式
-		let books = responseData.books.map((book) => ({
-			name: `${book.title}${book.author ? ` - ${book.author}` : ''}`,
-			value: book.bookId,
-		}));
+		// 将书籍转换为搜索结果格式，过滤掉无效数据
+		let books = responseData.books
+			.filter((book) => {
+				// 确保有 bookId 和 title（从顶层或嵌套的 book 对象获取）
+				const title = book.title || book.book?.title;
+				return book.bookId && title;
+			})
+			.map((book) => {
+				// 尝试从顶层获取，如果没有则从嵌套的 book 对象获取
+				const title = book.title || book.book?.title || '';
+				const author = book.author || book.book?.author || '';
+				return {
+					name: `${title}${author ? ` - ${author}` : ''}`,
+					value: book.bookId,
+				};
+			});
 
 		// 如果有过滤条件，进行筛选
 		if (filter) {
