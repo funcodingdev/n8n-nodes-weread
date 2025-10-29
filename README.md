@@ -38,7 +38,11 @@ npm install n8n-nodes-weread
 
 ## 凭证配置
 
-### 如何获取 Cookie
+本节点支持两种 Cookie 获取方式：**手动输入** 和 **CookieCloud 自动同步**。
+
+### 方式一：手动输入 Cookie
+
+#### 如何获取 Cookie
 
 1. 使用浏览器访问 [https://weread.qq.com](https://weread.qq.com) 并登录
 2. 按 **F12** 打开浏览器开发者工具
@@ -46,17 +50,53 @@ npm install n8n-nodes-weread
 4. 刷新页面或进行任意操作
 5. 找到任意 `weread.qq.com` 域名的请求
 6. 在 **Headers**（请求头）中找到并复制完整的 **Cookie** 值
-7. 在 n8n 中创建**微信读书 API** 凭证，粘贴 Cookie
+7. 在 n8n 中创建**微信读书 API** 凭证，选择 **手动输入**，粘贴 Cookie
 
-### 凭证字段
+### 方式二：CookieCloud 自动同步
 
-- **Cookie** (必填) - 从浏览器开发者工具中获取的完整 Cookie 字符串
+使用 [CookieCloud](https://github.com/easychen/CookieCloud) 可以自动同步浏览器 Cookie，无需手动复制粘贴。
+
+#### 配置步骤
+
+1. 部署 CookieCloud 服务器（参考 [CookieCloud 文档](https://github.com/easychen/CookieCloud)）
+2. 在浏览器中安装 CookieCloud 扩展并配置
+3. 在浏览器中登录微信读书，CookieCloud 会自动同步 Cookie
+4. 在 n8n 中创建**微信读书 API** 凭证，选择 **CookieCloud**
+5. 填写以下信息：
+   - **CookieCloud 服务器地址** - 你的 CookieCloud 服务器 URL（例如：`https://your-cookiecloud-server.com`）
+   - **CookieCloud UUID** - 在 CookieCloud 扩展中获取
+   - **CookieCloud 密码** - 在 CookieCloud 扩展中设置的加密密码
+
+#### CookieCloud 优势
+
+- ✅ **自动同步** - Cookie 过期后自动从 CookieCloud 获取最新值
+- ✅ **端对端加密** - Cookie 在传输和存储过程中都经过加密
+- ✅ **多设备共享** - 可以在多个 n8n 实例中共享同一个 CookieCloud 配置
+- ✅ **无需手动更新** - 浏览器 Cookie 更新后，n8n 会自动使用最新的 Cookie
+
+#### 域名配置说明
+
+CookieCloud 会自动从以下微信读书相关域名提取 Cookie：
+- `.weread.qq.com` - 微信读书主域名
+- `weread.qq.com` - 微信读书根域名
+- `.qq.com` - QQ 通用域名
+
+>  **提示**：确保你在安装了 CookieCloud 扩展的浏览器中访问并登录了 [https://weread.qq.com](https://weread.qq.com)，这样 CookieCloud 才能同步到相关的 Cookie。
+
+### 凭证字段说明
+
+- **Cookie 来源** (必选) - 选择 `手动输入` 或 `CookieCloud`
+- **Cookie** (手动输入时必填) - 从浏览器开发者工具中获取的完整 Cookie 字符串
+- **CookieCloud 服务器地址** (CookieCloud 模式必填) - CookieCloud 服务器 URL
+- **CookieCloud UUID** (CookieCloud 模式必填) - CookieCloud 的 UUID
+- **CookieCloud 密码** (CookieCloud 模式必填) - CookieCloud 的加密密码
 - **User-Agent** (可选) - 浏览器 User-Agent，默认已提供
 
-### ⚠️ 注意事项
+### 注意事项
 
-- Cookie 具有时效性，过期后需要重新获取
-- 请保护好你的 Cookie，不要分享给他人
+- **凭证测试**：由于技术限制，CookieCloud 模式下的凭证测试可能会失败，这是正常现象。请直接保存凭证，在工作流中使用时会正常工作。手动输入模式的凭证测试可以正常使用。
+- Cookie 具有时效性，过期后需要重新获取（使用 CookieCloud 可自动同步）
+- 请保护好你的 Cookie 和 CookieCloud 凭证，不要分享给他人
 - 仅供个人学习和研究使用，请勿用于商业用途
 - 建议请求间隔至少 500ms，避免频繁请求被限制
 
