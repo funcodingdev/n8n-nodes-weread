@@ -4,8 +4,6 @@
 
 微信读书是腾讯推出的一款阅读应用，提供丰富的图书资源和社交阅读功能。本节点支持获取书架、书籍信息、笔记、划线、阅读进度等数据。
 
-[n8n](https://n8n.io/) 是一个[公平代码许可](https://docs.n8n.io/reference/license/)的工作流自动化平台。
-
 ## 安装
 
 按照 n8n 社区节点文档中的[安装指南](https://docs.n8n.io/integrations/community-nodes/installation/)进行安装。
