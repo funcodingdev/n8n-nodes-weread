@@ -175,16 +175,47 @@ function handleWereadError(error: unknown): never {
  * 检查 API 响应是否包含错误码
  *
  * 微信读书的某些 API 即使 HTTP 状态码为 200，也可能在响应体中返回错误码
- * 例如：{"errcode": -2012, "errmsg": "登录超时"}
+ * 响应格式可能是：
+ * 1. 对象：{"errcode": -2012, "errmsg": "登录超时"}
+ * 2. 数组：[{"errCode": -2010, "errMsg": "用户不存在"}]
  *
  * 此函数会检查响应体中的 errCode/errcode 字段：
  * - 如果不存在或为 0，表示成功，不做处理
  * - 如果存在且非 0，表示业务错误，抛出异常
  *
- * @param response - API 响应对象
+ * @param response - API 响应对象或数组
  * @throws 如果响应包含错误码，抛出格式化的错误信息
  */
 function checkResponseError(response: unknown): void {
+	// 处理数组响应（某些 API 返回数组格式的错误）
+	if (Array.isArray(response)) {
+		if (response.length > 0 && response[0] && typeof response[0] === 'object') {
+			const firstItem = response[0] as Record<string, unknown>;
+			const errCode = firstItem.errCode !== undefined ? firstItem.errCode : firstItem.errcode;
+			if (errCode !== undefined && errCode !== 0) {
+				const errMsg = (firstItem.errMsg || firstItem.errmsg || '未知错误') as string;
+
+				// Cookie 过期或用户异常的错误码
+				if (errCode === -2012 || errCode === -2010) {
+					throw new Error(
+						`微信读书 Cookie 已过期或用户异常 (错误码: ${errCode})\n` +
+							`错误信息: ${errMsg}\n\n` +
+							`解决方案：\n` +
+							`1. 在浏览器中访问 https://weread.qq.com 并重新登录\n` +
+							`2. 打开浏览器开发者工具（F12）\n` +
+							`3. 在 Network 标签页中找到任意请求，复制 Cookie 请求头\n` +
+							`4. 在 n8n 中更新微信读书凭证配置\n` +
+							`5. 确保 Cookie 包含 wr_vid 和 wr_skey 字段`,
+					);
+				}
+
+				throw new Error(`微信读书 API 错误 (${errCode}): ${errMsg}`);
+			}
+		}
+		return;
+	}
+
+	// 处理对象响应
 	if (response && typeof response === 'object') {
 		const data = response as Record<string, unknown>;
 
