@@ -37,7 +37,8 @@
 		"n8nNodesApiVersion": 1,
 		"strict": false,
 		"credentials": [
-			"dist/credentials/WereadApi.credentials.js"
+			"dist/credentials/WereadManualCookieApi.credentials.js",
+			"dist/credentials/WereadCookieCloudApi.credentials.js"
 		],
 		"nodes": [
 			"dist/nodes/weread/Weread.node.js"

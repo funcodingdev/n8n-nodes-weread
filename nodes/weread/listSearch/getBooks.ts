@@ -44,8 +44,8 @@ export async function getBooks(
 		}
 
 		returnData.results = books;
-	} catch (error) {
-		console.error('Failed to fetch books:', error);
+	} catch {
+		// 获取书籍失败，返回空结果
 	}
 
 	return returnData;

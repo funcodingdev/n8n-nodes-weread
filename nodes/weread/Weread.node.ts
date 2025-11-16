@@ -26,8 +26,22 @@ export class Weread implements INodeType {
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
-				name: 'wereadApi',
+				name: 'wereadManualCookieApi',
 				required: true,
+				displayOptions: {
+					hide: {
+						usesCookieCloud: [true],
+					},
+				},
+			},
+			{
+				name: 'wereadCookieCloudApi',
+				required: true,
+				displayOptions: {
+					show: {
+						usesCookieCloud: [true],
+					},
+				},
 			},
 		],
 		requestDefaults: {
@@ -38,6 +52,13 @@ export class Weread implements INodeType {
 			},
 		},
 		properties: [
+			{
+				displayName: '使用 CookieCloud',
+				name: 'usesCookieCloud',
+				type: 'boolean',
+				default: false,
+				description: '是否使用 CookieCloud 服务器自动获取 Cookie',
+			},
 			{
 				displayName: '资源',
 				name: 'resource',
