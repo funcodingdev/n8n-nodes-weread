@@ -38,11 +38,7 @@ npm install n8n-nodes-weread
 
 ## 凭证配置
 
-本节点支持两种 Cookie 获取方式：**手动输入** 和 **CookieCloud 自动同步**。
-
-### 方式一：手动输入 Cookie
-
-#### 获取步骤
+### 获取 Cookie
 
 1. 访问 [https://weread.qq.com](https://weread.qq.com) 并登录
 2. 按 **F12** 打开浏览器开发者工具
@@ -50,41 +46,11 @@ npm install n8n-nodes-weread
 4. 刷新页面或进行任意操作
 5. 找到任意 `weread.qq.com` 域名的请求
 6. 在 **Headers** 中复制完整的 **Cookie** 值
-7. 在 n8n 中创建凭证，选择 **手动输入**，粘贴 Cookie
-
-### 方式二：CookieCloud 自动同步
-
-使用 [CookieCloud](https://github.com/easychen/CookieCloud) 可以自动同步浏览器 Cookie。
-
-#### 配置步骤
-
-1. 部署 CookieCloud 服务器
-2. 在浏览器中安装 CookieCloud 扩展
-3. 登录微信读书，CookieCloud 会自动同步 Cookie
-4. 在 n8n 中创建凭证，选择 **CookieCloud**
-5. 填写以下信息：
-   - **CookieCloud 服务器地址** - 你的 CookieCloud 服务器 URL
-   - **CookieCloud UUID** - 在 CookieCloud 扩展中获取
-   - **CookieCloud 密码** - 在 CookieCloud 扩展中设置的密码
-
-#### CookieCloud 优势
-
-- ✅ 自动同步 - Cookie 过期后自动获取最新值
-- ✅ 端对端加密 - Cookie 数据加密存储和传输
-- ✅ 多设备共享 - 在多个 n8n 实例间共享配置
-- ✅ 无需手动更新 - 浏览器登录后自动同步
+7. 在 n8n 中创建凭证，粘贴 Cookie 值
 
 ### 凭证参数说明
 
-**手动输入模式：**
 - **Cookie** - 从浏览器开发者工具中获取的完整 Cookie 字符串
-
-**CookieCloud 模式：**
-- **CookieCloud 服务器地址** - CookieCloud 服务器 URL
-- **CookieCloud UUID** - CookieCloud 扩展中显示的 UUID
-- **CookieCloud 密码** - CookieCloud 扩展中设置的加密密码
-
-**其他：**
 - **User-Agent** (可选) - 浏览器 User-Agent，默认已提供
 
 ### 注意事项
@@ -107,4 +73,3 @@ npm install n8n-nodes-weread
 - [n8n 社区节点文档](https://docs.n8n.io/integrations/#community-nodes)
 - [微信读书官网](https://weread.qq.com/)
 - [项目仓库](https://github.com/funcodingdev/n8n-nodes-weread)
-- [CookieCloud](https://github.com/easychen/CookieCloud)

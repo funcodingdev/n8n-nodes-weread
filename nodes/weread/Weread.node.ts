@@ -28,20 +28,6 @@ export class Weread implements INodeType {
 			{
 				name: 'wereadManualCookieApi',
 				required: true,
-				displayOptions: {
-					show: {
-						usesCookieCloud: [false],
-					},
-				},
-			},
-			{
-				name: 'wereadCookieCloudApi',
-				required: true,
-				displayOptions: {
-					show: {
-						usesCookieCloud: [true],
-					},
-				},
 			},
 		],
 		requestDefaults: {
@@ -52,13 +38,6 @@ export class Weread implements INodeType {
 			},
 		},
 		properties: [
-			{
-				displayName: '使用 CookieCloud',
-				name: 'usesCookieCloud',
-				type: 'boolean',
-				default: false,
-				description: '是否使用 CookieCloud 服务器自动获取 Cookie',
-			},
 			{
 				displayName: '资源',
 				name: 'resource',

@@ -5,8 +5,6 @@ import type {
 	IDataObject,
 	IHttpRequestOptions,
 } from 'n8n-workflow';
-import { getCookieFromCloud } from './cookiecloud';
-import { cookieCacheManager } from './cacheManager';
 
 /**
  * 构建微信读书 API 请求的 Headers
@@ -60,47 +58,9 @@ export async function wereadApiRequest(
 	qs: IDataObject = {},
 	body: IDataObject | undefined = undefined,
 ) {
-	let cookie: string;
-	let userAgent: string;
-
-	// 优先尝试 CookieCloud 凭证
-	try {
-		const credentials = await this.getCredentials('wereadCookieCloudApi');
-		const server = credentials.cookieCloudServer as string;
-		const uuid = credentials.cookieCloudUuid as string;
-		const password = credentials.cookieCloudPassword as string;
-		const credentialId =
-			(((credentials as unknown) as Record<string, unknown>).id as string) || `${server}:${uuid}`;
-
-		// 尝试从缓存获取 Cookie
-		const cachedCookie = cookieCacheManager.get(server, uuid, credentialId);
-
-		if (cachedCookie) {
-			cookie = cachedCookie;
-		} else {
-			// 缓存不存在或已过期，重新获取
-			cookie = await getCookieFromCloud({
-				server,
-				uuid,
-				password,
-			});
-			// 将新获取的 Cookie 存入缓存
-			cookieCacheManager.set(server, uuid, cookie, credentialId);
-		}
-
-		userAgent = credentials.userAgent as string;
-	} catch (error) {
-		// 如果 CookieCloud 失败，使用手动 Cookie 凭证
-		try {
-			const credentials = await this.getCredentials('wereadManualCookieApi');
-			cookie = credentials.cookie as string;
-			userAgent = credentials.userAgent as string;
-		} catch {
-			throw new Error(
-				`无法获取任何有效凭证。CookieCloud 错误: ${error instanceof Error ? error.message : '未知错误'}`,
-			);
-		}
-	}
+	const credentials = await this.getCredentials('wereadManualCookieApi');
+	const cookie = credentials.cookie as string;
+	const userAgent = credentials.userAgent as string;
 
 	const options: IHttpRequestOptions = {
 		method,
@@ -114,19 +74,6 @@ export async function wereadApiRequest(
 	try {
 		return await this.helpers.httpRequest(options);
 	} catch (error) {
-		// 如果是 CookieCloud 的 Cookie，API 错误时清除缓存以便下次重新获取
-		if (error.response?.body?.errcode) {
-			try {
-				const credentials = await this.getCredentials('wereadCookieCloudApi');
-				const server = credentials.cookieCloudServer as string;
-				const uuid = credentials.cookieCloudUuid as string;
-				cookieCacheManager.clear(server, uuid);
-			} catch {
-				// 如果无法获取凭证信息，忽略清除缓存的错误
-			}
-		}
-
 		handleWereadError(error);
 	}
 }
-
