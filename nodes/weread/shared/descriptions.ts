@@ -41,7 +41,7 @@ export const limitField: INodeProperties = {
 	name: 'limit',
 	type: 'number',
 	default: 50,
-	description: 'Max number of results to return',
+	description: '返回结果的最大数量',
 	typeOptions: {
 		minValue: 1,
 	},
@@ -52,6 +52,6 @@ export const includeChaptersField: INodeProperties = {
 	name: 'includeChapters',
 	type: 'boolean',
 	default: false,
-	description: 'Whether to fetch chapter information and associate it with results',
+	description: '是否获取章节信息并与结果关联',
 };
 

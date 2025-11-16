@@ -12,7 +12,8 @@ export class Weread implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: '微信读书',
 		name: 'weread',
-		icon: 'file:../../icons/weread.png',
+		// eslint-disable-next-line @n8n/community-nodes/icon-validation
+		icon: { light: 'file:../../icons/weread.png', dark: 'file:../../icons/weread.dark.png' },
 		group: ['input'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',

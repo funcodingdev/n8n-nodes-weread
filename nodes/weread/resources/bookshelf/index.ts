@@ -28,18 +28,18 @@ export const bookshelfDescription: INodeProperties[] = [
 					},
 				},
 			},
-			{
-				name: 'Get Many',
-				value: 'getAll',
-				action: '获取完整书架',
-				description: '获取书架上所有书籍及阅读进度',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '/web/shelf/sync',
-					},
+		{
+			name: '获取完整书架',
+			value: 'getAll',
+			action: '获取完整书架',
+			description: '获取书架上所有书籍及阅读进度',
+			routing: {
+				request: {
+					method: 'GET',
+					url: '/web/shelf/sync',
 				},
 			},
+		},
 		],
 		default: 'getNotebook',
 	},
