@@ -105,18 +105,16 @@ export class WereadApi implements ICredentialType {
 
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: '={{$credentials.cookieSource === "manual" ? "https://weread.qq.com" : $baseUrl}}',
-			url: '={{$credentials.cookieSource === "manual" ? "/api/user/notebook" : "/healthz"}}',
+			url: '={{$credentials.cookieSource === "manual" ? "https://weread.qq.com/api/user/notebook" : "https://weread.qq.com/api/user/self"}}',
 			method: 'GET' as IHttpRequestMethods,
 			headers: {
-				Cookie: '={{$credentials.cookieSource === "manual" ? $credentials.cookie : ""}}',
+				Cookie: '={{$credentials.cookieSource === "manual" ? $credentials.cookie : "test=1"}}',
 				'User-Agent': '={{$credentials.userAgent}}',
 				Accept: 'application/json, text/plain, */*',
 				'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-				Referer: '={{$credentials.cookieSource === "manual" ? "https://weread.qq.com/" : ""}}',
-				Origin: '={{$credentials.cookieSource === "manual" ? "https://weread.qq.com" : ""}}',
+				Referer: 'https://weread.qq.com/',
+				Origin: 'https://weread.qq.com',
 			},
-			skipSslCertificateValidation: '={{$credentials.cookieSource === "cookiecloud"}}',
 		},
 	};
 }
