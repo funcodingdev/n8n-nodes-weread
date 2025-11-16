@@ -29,8 +29,8 @@ export class Weread implements INodeType {
 				name: 'wereadManualCookieApi',
 				required: true,
 				displayOptions: {
-					hide: {
-						usesCookieCloud: [true],
+					show: {
+						usesCookieCloud: [false],
 					},
 				},
 			},
