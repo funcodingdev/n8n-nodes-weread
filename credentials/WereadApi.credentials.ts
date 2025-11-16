@@ -1,8 +1,8 @@
 import type {
-	IAuthenticateGeneric,
 	ICredentialTestRequest,
 	ICredentialType,
 	INodeProperties,
+	IHttpRequestMethods,
 } from 'n8n-workflow';
 
 export class WereadApi implements ICredentialType {
@@ -13,6 +13,8 @@ export class WereadApi implements ICredentialType {
 	icon = 'file:../icons/weread.png' as const;
 
 	documentationUrl = 'https://github.com/funcodingdev/n8n-nodes-weread';
+
+	testedBy = 'weread';
 
 	properties: INodeProperties[] = [
 		{
@@ -100,27 +102,15 @@ export class WereadApi implements ICredentialType {
 		},
 	];
 
-	// 注意：凭证测试由节点代码中的 wereadApiRequest 函数处理
-	// 该函数会根据 cookieSource 自动从 CookieCloud 获取或使用手动输入的 Cookie
-	authenticate: IAuthenticateGeneric = {
-		type: 'generic',
-		properties: {
-			headers: {
-				Cookie: '={{$credentials.cookie}}',
-				'User-Agent': '={{$credentials.userAgent}}',
-				Accept: 'application/json, text/plain, */*',
-				'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-				Referer: 'https://weread.qq.com/',
-				Origin: 'https://weread.qq.com',
-			},
-		},
-	};
-
+	// 凭证验证处理说明
+	// - 手动输入模式：使用 test 属性验证 Cookie 有效性
+	// - CookieCloud 模式：由于需要先从 CookieCloud 获取 Cookie，测试在节点执行时进行
+	// - 实际验证由 transport.ts 中的 validateWereadCredentials 函数处理
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: 'https://weread.qq.com',
 			url: '/api/user/notebook',
-			method: 'GET',
+			method: 'GET' as IHttpRequestMethods,
 		},
 	};
 }

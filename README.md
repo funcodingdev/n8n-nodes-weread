@@ -92,9 +92,17 @@ CookieCloud 会自动从以下微信读书相关域名提取 Cookie：
 - **CookieCloud 密码** (CookieCloud 模式必填) - CookieCloud 的加密密码
 - **User-Agent** (可选) - 浏览器 User-Agent，默认已提供
 
-### 注意事项
+### 凭证测试说明
 
-- **凭证测试**：由于技术限制，CookieCloud 模式下的凭证测试可能会失败，这是正常现象。请直接保存凭证，在工作流中使用时会正常工作。手动输入模式的凭证测试可以正常使用。
+- **手动输入模式**：保存凭证时会自动测试 Cookie 有效性
+- **CookieCloud 模式**：由于需要先从 CookieCloud 服务器获取并解密 Cookie，凭证测试在工作流执行时进行。保存后直接在节点中使用，如果配置正确会正常工作
+- 如测试失败，常见原因：
+  - CookieCloud 配置错误 - 检查服务器地址、UUID 和密码是否正确
+  - Cookie 已过期 - 请刷新浏览器中的微信读书登录
+  - 网络问题 - 检查网络连接，特别是到 CookieCloud 服务器的连接
+
+### 其他注意事项
+
 - Cookie 具有时效性，过期后需要重新获取（使用 CookieCloud 可自动同步）
 - 请保护好你的 Cookie 和 CookieCloud 凭证，不要分享给他人
 - 仅供个人学习和研究使用，请勿用于商业用途
