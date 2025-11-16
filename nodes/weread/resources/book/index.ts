@@ -23,7 +23,7 @@ export const bookDescription: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/api/book/info?bookId={{$parameter.bookId.value || $parameter.bookId}}',
+						url: '=/web/book/info?bookId={{$parameter.bookId.value || $parameter.bookId}}',
 					},
 				},
 			},
