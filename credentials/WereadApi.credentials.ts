@@ -1,4 +1,5 @@
 import type {
+	IAuthenticateGeneric,
 	ICredentialTestRequest,
 	ICredentialType,
 	INodeProperties,
@@ -97,18 +98,25 @@ export class WereadApi implements ICredentialType {
 		},
 	];
 
+	authenticate: IAuthenticateGeneric = {
+		type: 'generic',
+		properties: {},
+	};
+
 	test: ICredentialTestRequest = {
 		request: {
-			url: 'https://weread.qq.com/api/user/notebook',
+			baseURL: '={{$credentials.cookieSource === "manual" ? "https://weread.qq.com" : $baseUrl}}',
+			url: '={{$credentials.cookieSource === "manual" ? "/api/user/notebook" : "/healthz"}}',
 			method: 'GET' as IHttpRequestMethods,
 			headers: {
-				Cookie: '={{$credentials.cookie}}',
+				Cookie: '={{$credentials.cookieSource === "manual" ? $credentials.cookie : ""}}',
 				'User-Agent': '={{$credentials.userAgent}}',
 				Accept: 'application/json, text/plain, */*',
 				'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-				Referer: 'https://weread.qq.com/',
-				Origin: 'https://weread.qq.com',
+				Referer: '={{$credentials.cookieSource === "manual" ? "https://weread.qq.com/" : ""}}',
+				Origin: '={{$credentials.cookieSource === "manual" ? "https://weread.qq.com" : ""}}',
 			},
+			skipSslCertificateValidation: '={{$credentials.cookieSource === "cookiecloud"}}',
 		},
 	};
 }
