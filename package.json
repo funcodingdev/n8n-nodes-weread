@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-weread",
-	"version": "0.1.8",
+	"version": "0.1.9",
 	"description": "n8n community node for WeRead (微信读书) - Access your bookshelf, notes, bookmarks and reading data",
 	"license": "MIT",
 	"homepage": "https://github.com/funcodingdev/n8n-nodes-weread",
