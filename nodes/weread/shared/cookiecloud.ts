@@ -39,17 +39,43 @@ export async function getCookieFromCloud(config: CookieCloudConfig): Promise<str
 
 		const cookieData = data.cookie_data;
 
-		if (!cookieData || !cookieData['weread.qq.com']) {
-			throw new Error('No WeRead cookies found in CookieCloud response');
+		if (!cookieData) {
+			throw new Error('No cookie_data found in CookieCloud response');
 		}
 
-		const cookies = cookieData['weread.qq.com'];
+		// 尝试多个域名查找微信读书相关的 Cookie
+		const domains = ['weread.qq.com', '.weread.qq.com', '.qq.com'];
+		let cookies: Array<{ name: string; value: string }> = [];
+
+		for (const domain of domains) {
+			if (cookieData[domain]) {
+				cookies = cookieData[domain];
+				if (cookies && cookies.length > 0) {
+					break;
+				}
+			}
+		}
+
+		if (!cookies || cookies.length === 0) {
+			const availableDomains = Object.keys(cookieData).join(', ');
+			throw new Error(
+				`No WeRead cookies found. Available domains: ${availableDomains || 'none'}. ` +
+				`Please make sure you have logged in to weread.qq.com in your browser with CookieCloud enabled.`,
+			);
+		}
+
 		const cookieStr = cookies
-			.map((cookie) => `${cookie.name}=${cookie.value}`)
+			.map((cookie) => {
+				if (!cookie.name || !cookie.value) {
+					return null;
+				}
+				return `${cookie.name}=${cookie.value}`;
+			})
+			.filter((c) => c !== null)
 			.join('; ');
 
 		if (!cookieStr) {
-			throw new Error('Failed to extract cookies from CookieCloud data');
+			throw new Error('Failed to extract valid cookies from CookieCloud data');
 		}
 
 		return cookieStr;
